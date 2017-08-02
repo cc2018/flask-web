@@ -1,0 +1,86 @@
+{% extends "layout.html" %}
+{% block head %}
+<meta name="description" content="">
+<meta name="author" content="">
+<title>Edit page</title>
+<!-- Custom styles for this template -->
+<!-- Bootstrap core CSS -->
+<link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<link href="{{ url_for('static', filename='css/ie10-viewport-bug-workaround.css') }}" rel="stylesheet">
+<link href="{{ url_for('static', filename='css/common.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+<nav class="navbar navbar-default navbar-fixed-top xshare">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="/">每日分享--你值得拥有</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav navbar-right">
+        <li class="active"><a href="/">首页</a></li>
+        <li><a href="/articles">文章</a></li>
+        <li><a href="/musics">音乐</a></li>
+        <li><a href="/videos">视频</a></li>
+        <li><a href="/images">图片</a></li>
+        {% if not session.logged_in %}
+          <li><a href="{{ url_for('login') }}">登录</a></li>
+        {% else %}
+          <li><a href="{{ url_for('logout') }}">注销</a></li>
+        {% endif %}
+      </ul>
+      <!-- <ul class="nav navbar-nav navbar-right">
+        <li><a href="../navbar/">Default</a></li>
+        <li><a href="../navbar-static-top/">Static top</a></li>
+        <li class="active"><a href="./">Fixed top <span class="sr-only">(current)</span></a></li>
+      </ul> -->
+    </div><!--/.nav-collapse -->
+  </div>
+</nav>
+<div class="container edit-article first">
+  <div class="col-xs-12 col-sm-8 col-sm-offset-2">
+    <form method="post" role="form">
+      <div class="col-xs-12 col-sm-10 edit-input">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-file"></i></span>
+          <input autofocus="" class="form-control" id="write-title" name="write-title" placeholder="文章标题" required="" type="text" value="">
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-2 edit-input">
+        <a href="/admin/finder/basedir" target="_blank" type="button" class="btn btn-block btn-primary">
+            图库
+        </a>
+      </div>
+      <div class="col-xs-12 col-sm-6 edit-input">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-book"></i></span>
+          <input class="form-control" name="write-desc" placeholder="文章描述" required="" type="text" value="">
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 edit-input">
+        <div class="input-group">
+          <span class="input-group-addon"><i class="glyphicon glyphicon-tags"></i></span>
+          <input class="form-control" name="write-tags" placeholder="文章标签，用逗号分隔" required="" type="text" value="">
+        </div>
+      </div>
+      <div class="col-xs-12 edit-input">
+          <textarea id="write-body" class="form-control write-body" name="write-body"></textarea>
+      </div>
+      <div class="col-xs-12 edit-input">
+        <div class="pull-right">
+          <input class="btn btn-default" type="reset" value="重 置">
+          <input class="btn btn-primary" name="write-submit" type="submit" value="提交">
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<script src="{{ url_for('static', filename='js/common.js') }}"></script>
+{% endblock %}
