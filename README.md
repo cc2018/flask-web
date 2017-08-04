@@ -13,9 +13,11 @@ flask web pro
 
 cd flask-web
 virtualenv venv
-. venv/bin/activate   #windows环境使用 venv\scripts\activate
-pip install Flask     #安装过后可不执行
-
+. venv/bin/activate             #windows环境使用 venv\scripts\activate
+pip install Flask               #安装过后可不执行
+pip install pymongo             #安装过后可不执行
+pip install Flask-Markdown      #安装过后可不执行
+pip install Flask-Misaka        #安装过后可不执行
 ```
 
 退出virtualenv环境使用：
@@ -23,7 +25,10 @@ pip install Flask     #安装过后可不执行
 deactivate
 ```
 
-### 启动mongodb
+### mac下启动mongodb
+cd /Users/xxx/mongodb
+mongodb/bin/mongod --dbpath ./db/data --logpath ./db/log/mongodb.log --logappend &
+mongodb/bin/mongod --dbpath ./db/data --logpath ./db/log/mongodb.log &
 
 
 ### 启动app

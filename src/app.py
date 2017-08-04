@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 
 import os
+
 import datetime
 from pymongo import MongoClient
 from flaskext.markdown import Markdown
+#from flask.ext.misaka import Misaka
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
+from posts import Posts
 
 #from misaka import Markdown, HtmlRenderer
 #rndr = HtmlRenderer()
@@ -13,15 +16,10 @@ from flask import Flask, request, session, g, redirect, url_for, abort, \
 
 app = Flask(__name__)
 md = Markdown(app, safe_mode=False)
-#md = Markdown(app,
-#    extensions=['footnotes'],
-#    extension_configs={'footnotes': ('PLACE_MARKER','~~~~~~~~')},
-#    safe_mode=True,
-#    output_format='html4',
-#)
+#Misaka(app)
 
 # db data
-client = MongoClient('mongodb://localhost:27017/')
+client = MongoClient('mongodb://172.18.182.4:27017/')
 db = client.cms
 articles = db.articles
 org_articles = db.org_articles
@@ -32,6 +30,9 @@ app.config.update(dict(
     USERNAME='admin',
     PASSWORD='default'
 ))
+
+posts = Posts(app.root_path)
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -47,11 +48,13 @@ def login():
             return redirect(url_for('show_index'))
     return render_template('login.html', error=error)
 
+
 @app.route('/logout')
 def logout():
     session.pop('logged_in', None)
     flash('You were logged out')
     return redirect(url_for('login'))
+
 
 @app.route('/edit', methods=['GET', 'POST'])
 def edit_articles():
@@ -79,10 +82,26 @@ def edit_articles():
     else:
         return redirect(url_for('login'))
 
-@app.route('/articles')
+
+@app.route('/article')
 def show_articles():
-    data = org_articles.find().sort([('create_at',-1)]);
-    return render_template('articles.html', articles=data)
+    # data = org_articles.find().sort([('create_at',-1)]);
+    return render_template('article.html', articles=posts)
+
+
+@app.route('/article/<int:year>/<int:month>/<int:day>/<title>')
+def show_post(year, month, day, title):
+    file_info = posts['%d-%02d-%d-%s.md' % (year, month, day, title)]
+    if file_info is not None:
+        with app.open_resource(file_info['path']) as f:
+            content = f.read()
+            data = {
+                'content': content.decode('utf-8')
+            }
+            return render_template('post.html', post=data)
+
+    return redirect(url_for('show_index'))
+
 
 @app.route('/')
 def show_index():

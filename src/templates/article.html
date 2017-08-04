@@ -26,8 +26,8 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li class="active"><a href="/">首页</a></li>
-                    <li><a href="/article">文章</a></li>
+                    <li><a href="/">首页</a></li>
+                    <li class="active"><a href="/article">文章</a></li>
                     <li><a href="/musics">音乐</a></li>
                     <li><a href="/videos">视频</a></li>
                     <li><a href="/images">图片</a></li>
@@ -51,20 +51,18 @@
                 <h3>Second content</h3>
             </div>
             <div id="primary" class="col-md-9 content-area">
-                {% for item in jokes %}
-                    <article class="article">
-                        <header class="article-header">
-                            <span>{{ item.title }}</span>
-                        </header>
-                        <div class="article-content">
-                            {{ item.content }}
-                        </div>
-                        <footer class="article-footer">
-                            <span>{{ item.create_at }}</span>
-                        </footer>
-                    </article>
-                {% endfor %}
+                <ul>
+                    {% for item in articles %}
+                        <li>
+                            {{ item.date }} >>
+                            <a href=""></a>
+                        </li>
+
+                    {% endfor %}
+                </ul>
+
             </div>
+
         </div>
     </div>
 
