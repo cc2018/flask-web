@@ -26,10 +26,12 @@ deactivate
 ```
 
 ### mac下启动mongodb
+
+```
 cd /Users/xxx/mongodb
 mongodb/bin/mongod --dbpath ./db/data --logpath ./db/log/mongodb.log --logappend &
 mongodb/bin/mongod --dbpath ./db/data --logpath ./db/log/mongodb.log &
-
+```
 
 ### 启动app
 ```

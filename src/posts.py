@@ -24,11 +24,11 @@ class Posts(dict):
             head = rv.group(1)
 
             # 匹配基本信息
-            title = re.findall('title:(.*?)\r\n', head)
-            author = re.findall('author:(.*?)\r\n', head)
-            categories = re.findall('categories:(.*?)\r\n', head)
-            tag = re.findall('tag:(.*?)\r\n', head)
-            date = re.findall('date:(.*?)\r\n', head)
+            title = re.findall('title:(.*?)[\r\n|\n]', head)
+            author = re.findall('author:(.*?)[\r\n|\n]', head)
+            categories = re.findall('categories:(.*?)[\r\n|\n]', head)
+            tag = re.findall('tag:(.*?)[\r\n|\n]', head)
+            date = re.findall('date:(.*?)[\r\n|\n]', head)
 
             file_info['title'] = title[0].strip()
             file_info['author'] = author[0].strip()
@@ -52,8 +52,8 @@ class Posts(dict):
 
             # 保存文章信息
             for file_name in file_names:
-                file_name = file_name.decode('gbk')
-                path = parent.decode('gbk')
+                file_name = file_name.decode('utf-8')
+                path = parent.decode('utf-8')
                 file_info = self.read_post_info(path, file_name)
                 self[file_name] = file_info
 
@@ -62,7 +62,7 @@ class Posts(dict):
             for parent, dir_names, file_names in os.walk(drafts_path):
                 # 保存文章信息
                 for file_name in file_names:
-                    file_name = file_name.decode('gbk')
-                    path = parent.decode('gbk')
+                    file_name = file_name.decode('utf-8')
+                    path = parent.decode('utf-8')
                     file_info = self.read_post_info(path, file_name)
                     self[file_name] = file_info

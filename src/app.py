@@ -4,22 +4,27 @@ import os
 
 import datetime
 from pymongo import MongoClient
-from flaskext.markdown import Markdown
-#from flask.ext.misaka import Misaka
+#from flaskext.markdown import Extension, Markdown
+from flask_misaka import Misaka
+from flask_misaka import markdown
 from flask import Flask, request, session, g, redirect, url_for, abort, \
      render_template, flash
 from posts import Posts
+
+import re
 
 #from misaka import Markdown, HtmlRenderer
 #rndr = HtmlRenderer()
 #md = Markdown(rndr)
 
 app = Flask(__name__)
-md = Markdown(app, safe_mode=False)
-#Misaka(app)
+#md = Markdown(app, safe_mode=False)
+#md.register_extension(SimpleExtension)
+Misaka(app)
+
 
 # db data
-client = MongoClient('mongodb://172.18.182.4:27017/')
+client = MongoClient('mongodb://localhost:27017/')
 db = client.cms
 articles = db.articles
 org_articles = db.org_articles
@@ -56,33 +61,6 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/edit', methods=['GET', 'POST'])
-def edit_articles():
-    if 'logged_in' in session and session['logged_in'] == True:
-        if request.method == 'POST':
-            title = request.form['write-title']
-            desc = request.form['write-desc']
-            tags = request.form['write-tags']
-            content = md(request.form['write-body'])
-            post = {
-                'article_type': 2,
-                'id': 2,
-                'author': 'Sombody Cao',
-                'title': title,
-                'desc': desc,
-                'tags': tags,
-                'content': content,
-                'create_at': datetime.datetime.utcnow(),
-                'update_at': datetime.datetime.utcnow()
-            }
-            org_articles.insert_one(post)
-            return redirect(url_for('show_index'))
-        return render_template('edit.html')
-
-    else:
-        return redirect(url_for('login'))
-
-
 @app.route('/article')
 def show_articles():
     # data = org_articles.find().sort([('create_at',-1)]);
@@ -94,9 +72,13 @@ def show_post(year, month, day, title):
     file_info = posts['%d-%02d-%d-%s.md' % (year, month, day, title)]
     if file_info is not None:
         with app.open_resource(file_info['path']) as f:
-            content = f.read()
+            content = f.read().decode('utf-8')
+            body_pattern = re.compile('---[\w\W]*?---([\w\W]*)')
+            rv = re.search(body_pattern, content)
+            body = rv.group(1)
+
             data = {
-                'content': content.decode('utf-8')
+                'content': markdown(body, fenced_code=True)
             }
             return render_template('post.html', post=data)
 

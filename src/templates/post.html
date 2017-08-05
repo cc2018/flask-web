@@ -27,7 +27,7 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="/">首页</a></li>
-                    <li class="active"><a href="/articles">文章</a></li>
+                    <li class="active"><a href="/article">文章</a></li>
                     <li><a href="/musics">音乐</a></li>
                     <li><a href="/videos">视频</a></li>
                     <li><a href="/images">图片</a></li>
@@ -53,7 +53,7 @@
             <div id="primary" class="col-md-9 content-area">
                 <article class="article">
                     <div class="article-content">
-                        {{ post.content|markdown }}
+                        {{ post.content }}
                     </div>
                 </article>
             </div>
