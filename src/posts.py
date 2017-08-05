@@ -37,6 +37,7 @@ class Posts(dict):
             file_info['date'] = date[0].strip()
             file_info['path'] = file_path
             file_info['name'] = file_name
+            file_info['url'] = 'article/' + os.path.splitext(file_name)[0].replace('-', '/')
 
         return file_info
 

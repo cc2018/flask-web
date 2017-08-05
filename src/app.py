@@ -63,8 +63,11 @@ def logout():
 
 @app.route('/article')
 def show_articles():
-    # data = org_articles.find().sort([('create_at',-1)]);
-    return render_template('article.html', articles=posts)
+    articles = []
+    for item in posts:
+        articles.append(posts[item])
+
+    return render_template('article.html', articles=articles)
 
 
 @app.route('/article/<int:year>/<int:month>/<int:day>/<title>')

@@ -7,7 +7,7 @@
 (function (doc) {
     var leftDoc = {
         init: function () {
-            var titles_element = $('#article-content h3');
+            var titles_element = $('.docs-content h3');
             if (titles_element) {
                 var tpl = '<li><a href="#{{title}}">{{title}}</a></li>';
                 var html = '';
