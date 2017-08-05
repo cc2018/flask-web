@@ -5,13 +5,23 @@
 
 
 (function (doc) {
-    // about edit logic
-    /*var editor = new EpicEditor({basePath: 'static', theme: {
-        editor: '/themes/editor/epic-light.css'
-    }}).load();
+    var leftDoc = {
+        init: function () {
+            var titles_element = $('#article-content h3');
+            if (titles_element) {
+                var tpl = '<li><a href="#{{title}}">{{title}}</a></li>';
+                var html = '';
+                titles_element.each(function(index, data) {
+                    var id = $(data).text();
+                    $(data).attr('id', id);
+                    html += tpl.replace(/{{title}}/g, id);
+                });
 
-    editor.on('preview', function () {
-        $('#write-body').val(editor.getElement('editor').body.innerHTML);
-    });*/
+                $('#navigation').html(html);
+            }
+        }
+    };
+
+    leftDoc.init();
 
 })(document);
